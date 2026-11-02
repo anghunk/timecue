@@ -2,7 +2,7 @@
 	"name": "timecue",
 	"description": "知时 · TimeCue，到点提醒，确认才收起。",
 	"private": true,
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"type": "module",
 	"engines": {
 		"node": ">=22"
