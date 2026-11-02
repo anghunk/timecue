@@ -1,0 +1,41 @@
+{
+	"name": "timecue",
+	"description": "知时 · TimeCue，到点提醒，确认才收起。",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"dev": "wxt",
+		"dev:firefox": "wxt -b firefox --mv3",
+		"dev:edge": "wxt -b edge",
+		"build": "wxt build",
+		"build:edge": "wxt build -b edge",
+		"build:firefox": "wxt build -b firefox --mv3",
+		"build:safari": "wxt build -b safari",
+		"zip": "wxt zip",
+		"zip:firefox": "wxt zip -b firefox --mv3",
+		"typecheck": "tsc --noEmit",
+		"postinstall": "wxt prepare"
+	},
+	"dependencies": {
+		"@internationalized/date": "^3.12.4",
+		"lucide-react": "^1.66.0",
+		"react": "^19.3.1",
+		"react-aria-components": "^1.22.1",
+		"react-dom": "^19.3.1"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.3.3",
+		"@types/node": "^26.6.6",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"@wxt-dev/module-react": "^1.2.2",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.5",
+		"wxt": "^0.21.5"
+	}
+}
