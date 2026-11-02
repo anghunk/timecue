@@ -1,16 +1,44 @@
-<img src="./public/icon/128.png" alt="知时 · TimeCue Logo" width="96" height="96" />
+<p align="center">
+  <img src="./public/icon/128.png" alt="知时 · TimeCue Logo" width="96" height="96" />
+</p>
 
-# 知时 · TimeCue
+<h1 align="center">知时 · TimeCue</h1>
 
-一个静音的浏览器提醒扩展：到点显示提醒卡片，确认后才收起。
+<p align="center"><strong>到点提醒，确认才收起。</strong></p>
+<p align="center">静音浏览器提醒扩展，支持定时、倒计时与重复提醒。</p>
+
+<p align="center">
+  <a href="#功能">功能</a> ·
+  <a href="#界面预览">界面预览</a> ·
+  <a href="#本地安装">本地安装</a> ·
+  <a href="#开发">开发</a>
+</p>
 
 ## 功能
 
-- 支持定时、倒计时、每天、工作日及每周自选日期提醒。
-- 支持固定间隔重复，或确认后重新计时。
-- 网页卡片持续显示，确认后在同一浏览器的所有标签页同步收起。
-- 工具栏查看提醒概览，管理页编辑提醒、查看确认记录与调整外观。
-- 支持浅色、深色与跟随系统主题。
+- **多种提醒**：定时、倒计时、每天、工作日与每周自选日期；支持固定间隔或确认后重新计时。
+- **确认才收起**：网页卡片持续显示，在任意标签页确认后，同一浏览器的其他标签页同步收起。
+- **统一管理**：工具栏查看概览，管理页编辑提醒、查看确认记录与调整外观。
+- **安静轻量**：全程静音，数据仅存本机，支持浅色、深色与跟随系统主题。
+
+## 界面预览
+
+![提醒管理：集中查看提醒规则、下次时间与待确认状态](./store-assets/screenshots/01-reminder-management.png)
+
+<details>
+<summary>查看更多：新建提醒与卡片预览</summary>
+
+**新建提醒** · 按需选择提醒类型、重复日期与时间。
+
+![新建提醒：设置每周自选日期与备注](./store-assets/screenshots/02-create-reminder.png)
+
+**卡片预览** · 查看静音提醒卡片，调整主题和同时显示数量。
+
+![通用设置与提醒卡片预览](./store-assets/screenshots/03-card-preview.png)
+
+</details>
+
+截图使用示例数据。
 
 ## 开发
 
