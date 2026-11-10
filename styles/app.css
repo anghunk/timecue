@@ -867,6 +867,17 @@ p {
   max-width: 350px;
 }
 
+.repository-link {
+  color: var(--pn-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.repository-link:hover {
+  color: var(--pn-muted);
+}
+
 .theme-picker button {
   padding-inline: 8px;
 }

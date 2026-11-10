@@ -1,10 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CalendarDays, Check, CheckCheck, Clock3, LoaderCircle, Repeat2, Timer } from 'lucide-react';
 import { useClock, useTheme, useTimeCue } from '../lib/hooks';
 import { formatUpcoming, TYPE_LABELS } from '../lib/format';
 import type { Reminder } from '../lib/types';
 
-const timingIcons = { once: Clock3, countdown: Timer, schedule: CalendarDays, interval: Repeat2 };
+/** 直接绘制卡片图标，避免内容脚本依赖图标库或外部 SVG 资源。 */
+function CardIcon({ name, size, className }: {
+	name: Reminder['timing']['type'] | 'check' | 'confirmed' | 'loading';
+	size: number;
+	className?: string;
+}) {
+	const shapes = {
+		once: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+		countdown: <><path d="M9 2h6M12 2v3m6 1 2-2" /><circle cx="12" cy="14" r="8" /><path d="M12 9v5l2 2" /></>,
+		schedule: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 10h18m-14 4h2m4 0h2m-8 4h2m4 0h2" /></>,
+		interval: <><path d="m16 2 4 4-4 4M20 6H7a3 3 0 0 0-3 3m4 13-4-4 4-4m-4 4h13a3 3 0 0 0 3-3" /></>,
+		check: <path d="m5 12 4 4L19 6" />,
+		confirmed: <><path d="m2 12 4 4L16 6m-5 10 3 3L24 9" /></>,
+		loading: <path d="M21 12a9 9 0 1 1-9-9" />,
+	};
+	return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className={className}>{shapes[name]}</svg>;
+}
 
 /** 保留退场中的卡片，等待动画完成后再移除 DOM。 */
 interface VisibleCard {
@@ -14,8 +29,8 @@ interface VisibleCard {
 }
 
 /** 静音提醒卡片；确认成功后先显示反馈，再淡出并收拢占位。 */
-export function ReminderCard({ reminder, now, busy, error, onConfirm, preview = false, exiting = false, confirmed = false, onExited }: {
-	reminder: Pick<Reminder, 'title' | 'note' | 'pendingAt'> & { timing: Pick<Reminder['timing'], 'type'> };
+export function ReminderCard({ reminder, now, busy, error, onConfirm, exiting = false, confirmed = false, onExited }: {
+	reminder: Pick<Reminder, 'title' | 'note' | 'url' | 'pendingAt'> & { timing: Pick<Reminder['timing'], 'type'> };
 	now: number;
 	busy?: boolean;
 	error?: string;
@@ -34,16 +49,16 @@ export function ReminderCard({ reminder, now, busy, error, onConfirm, preview = 
 		return () => clearTimeout(timeout);
 	}, [exiting]);
 	const elapsed = Math.max(0, Math.floor((now - (reminder.pendingAt ?? now)) / 60_000));
-	const Icon = timingIcons[reminder.timing.type];
 	return <div className={`reminder-card-slot ${exiting ? 'is-exiting' : ''}`} onAnimationEnd={(event) => {
 		if (event.target === event.currentTarget && event.animationName === 'timecue-collapse') exitCallback.current?.();
 	}}>
 		<div className="reminder-card-clip">
 			<article className={`reminder-card ${confirmed ? 'is-confirmed' : ''}`} data-type={reminder.timing.type} aria-busy={busy || undefined}>
-				<div className="reminder-card-brand"><span className="reminder-card-kind"><span className="reminder-kind-icon"><Icon size={15} /></span>{TYPE_LABELS[reminder.timing.type]}</span><span className="reminder-card-status">{confirmed ? <><Check size={11} />已收到</> : preview ? '预览' : '待确认'}</span></div>
+				<div className="reminder-card-brand"><span className="reminder-card-kind"><span className="reminder-kind-icon"><CardIcon name={reminder.timing.type} size={15} /></span>{TYPE_LABELS[reminder.timing.type]}</span><div className="reminder-card-time"><span>{formatUpcoming(reminder.pendingAt ?? now, now)}</span>{elapsed > 0 && <span>已等待 {elapsed} 分钟</span>}</div></div>
 				<h2>{reminder.title}</h2>
 				{reminder.note && <p className="reminder-card-note">{reminder.note}</p>}
-				<div className="reminder-card-footer"><div className="reminder-card-time"><span>{formatUpcoming(reminder.pendingAt ?? now, now)}</span><span>{elapsed ? `已等待 ${elapsed} 分钟` : '到时间了'}</span></div><button type="button" className="reminder-confirm" onClick={onConfirm} disabled={busy || exiting}>{confirmed ? <CheckCheck size={16} /> : busy ? <LoaderCircle size={15} className="spin" /> : <Check size={16} />}{confirmed ? '已收到' : busy ? '确认中…' : '确认收到'}</button></div>
+				{reminder.url && <a className="reminder-card-link" href={reminder.url} target="_blank" rel="noopener noreferrer">{reminder.url}</a>}
+				<div className="reminder-card-footer"><button type="button" className="reminder-confirm" onClick={onConfirm} disabled={busy || exiting}>{confirmed ? <CardIcon name="confirmed" size={16} /> : busy ? <CardIcon name="loading" size={15} className="spin" /> : <CardIcon name="check" size={16} />}{confirmed ? '已收到' : busy ? '确认中…' : '确认收到'}</button></div>
 				{error && !exiting && <p className="reminder-card-error" role="alert">{error}</p>}
 			</article>
 		</div>

@@ -20,8 +20,18 @@
 	text-align: left;
 }
 
-.reminder-card-slot { display: grid; grid-template-rows: 1fr; flex-shrink: 0; margin-bottom: 8px; }
-.reminder-card-clip { min-height: 0; overflow: hidden; }
+.reminder-card-slot {
+	display: grid;
+	grid-template-rows: 1fr;
+	flex-shrink: 0;
+	margin-bottom: 8px;
+}
+
+.reminder-card-clip {
+	min-height: 0;
+	overflow: hidden;
+}
+
 .reminder-card {
 	pointer-events: auto;
 	box-sizing: border-box;
@@ -36,31 +46,226 @@
 	animation: timecue-appear 300ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-.reminder-card-brand { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 12px; }
-.reminder-card-kind { display: flex; align-items: center; gap: 8px; color: var(--cue-color); font-weight: 550; }
-.reminder-kind-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 9px; background: var(--cue-soft); }
-.reminder-card-status { display: inline-flex; align-items: center; gap: 4px; color: var(--cue-color); font-size: 11px; }
-.reminder-card-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.is-confirmed .reminder-card-status::before { display: none; }
-.reminder-card h2 { font-size: 15px; line-height: 1.6; font-weight: 600; margin: 0; overflow-wrap: anywhere; }
-.reminder-card-note { margin: 6px 0 0; font-size: 13px; color: var(--pn-muted); line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
-.reminder-card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid color-mix(in srgb, var(--cue-color) 12%, var(--pn-surface)); margin-top: 16px; padding-top: 12px; }
-.reminder-card-time { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--pn-muted); font-variant-numeric: tabular-nums; }
-.reminder-card-time > span:last-child { color: var(--cue-color); }
-.reminder-confirm { appearance: none; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 6px; min-height: 36px; border: 1px solid transparent; border-radius: 10px; background: var(--cue-color); color: #fff; font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif; padding: 8px 12px; cursor: pointer; transition: filter 160ms, transform 160ms, background 160ms; }
-[data-theme='dark'] .reminder-confirm { color: #1b202b; }
-.reminder-confirm:hover { filter: brightness(1.08); transform: translateY(-1px); }
-.reminder-confirm:active { transform: scale(0.97); }
-.reminder-confirm:focus-visible { outline: 3px solid var(--cue-color); outline-offset: 3px; }
-.reminder-confirm:disabled { cursor: progress; }
-.reminder-card.is-confirmed .reminder-confirm { background: var(--cue-soft); color: var(--cue-color); opacity: 1; cursor: default; }
-.reminder-card-error { color: var(--pn-danger); font-size: 12px; margin: 10px 0 0; }
-.reminder-card-slot.is-exiting { pointer-events: none; animation: timecue-collapse 640ms cubic-bezier(0.22, 0.68, 0.22, 1) forwards; }
-.reminder-card-slot.is-exiting .reminder-card { pointer-events: none; animation: timecue-dismiss 400ms ease 120ms forwards; }
-.reminder-overflow { pointer-events: auto; text-align: center; background: var(--pn-surface); border: 1px solid var(--pn-panel-border); border-radius: 10px; color: var(--pn-muted); font-size: 12px; padding: 10px; margin: 0 4px 4px; }
-.spin { animation: timecue-spin 1s linear infinite; }
-@keyframes timecue-spin { to { transform: rotate(360deg); } }
-@keyframes timecue-appear { from { opacity: 0; transform: translateY(-8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes timecue-dismiss { to { opacity: 0; transform: translateX(14px) scale(0.97); } }
-@keyframes timecue-collapse { 0%, 45% { grid-template-rows: 1fr; margin-bottom: 8px; } 100% { grid-template-rows: 0fr; margin-bottom: 0; visibility: hidden; } }
-@media (prefers-reduced-motion: reduce) { .reminder-card, .reminder-card-slot.is-exiting, .reminder-card-slot.is-exiting .reminder-card, .spin { animation: none; } .reminder-confirm { transition: none; } }
+.reminder-card-brand {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 14px;
+	font-size: 12px;
+}
+
+.reminder-card-kind {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--cue-color);
+	font-weight: 550;
+}
+
+.reminder-kind-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 9px;
+	background: var(--cue-soft);
+}
+
+.reminder-card h2 {
+	font-size: 15px;
+	line-height: 1.6;
+	font-weight: 600;
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.reminder-card-note {
+	margin: 6px 0 0;
+	font-size: 13px;
+	color: var(--pn-muted);
+	line-height: 1.75;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.reminder-card-link {
+	display: inline-block;
+	margin-top: 8px;
+	color: var(--cue-color);
+	font-size: 12px;
+	line-height: 1.6;
+	overflow-wrap: anywhere;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.reminder-card-link:hover {
+	text-decoration-thickness: 2px;
+}
+
+.reminder-card-link:focus-visible {
+	outline: 2px solid var(--cue-color);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+.reminder-card-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 12px;
+	border-top: 1px solid color-mix(in srgb, var(--cue-color) 12%, var(--pn-surface));
+	margin-top: 16px;
+	padding-top: 12px;
+}
+
+.reminder-card-time {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	text-align: right;
+	gap: 2px;
+	font-size: 11px;
+	color: var(--pn-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.reminder-card-time>span+span {
+	color: var(--cue-color);
+}
+
+.reminder-confirm {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	gap: 6px;
+	min-height: 36px;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	background: var(--cue-color);
+	color: #fff;
+	font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif;
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: filter 160ms, transform 160ms, background 160ms;
+}
+
+[data-theme='dark'] .reminder-confirm {
+	color: #1b202b;
+}
+
+.reminder-confirm:hover {
+	filter: brightness(1.08);
+	transform: translateY(-1px);
+}
+
+.reminder-confirm:active {
+	transform: scale(0.97);
+}
+
+.reminder-confirm:focus-visible {
+	outline: 3px solid var(--cue-color);
+	outline-offset: 3px;
+}
+
+.reminder-confirm:disabled {
+	cursor: progress;
+}
+
+.reminder-card.is-confirmed .reminder-confirm {
+	background: var(--cue-soft);
+	color: var(--cue-color);
+	opacity: 1;
+	cursor: default;
+}
+
+.reminder-card-error {
+	color: var(--pn-danger);
+	font-size: 12px;
+	margin: 10px 0 0;
+}
+
+.reminder-card-slot.is-exiting {
+	pointer-events: none;
+	animation: timecue-collapse 640ms cubic-bezier(0.22, 0.68, 0.22, 1) forwards;
+}
+
+.reminder-card-slot.is-exiting .reminder-card {
+	pointer-events: none;
+	animation: timecue-dismiss 400ms ease 120ms forwards;
+}
+
+.reminder-overflow {
+	pointer-events: auto;
+	text-align: center;
+	background: var(--pn-surface);
+	border: 1px solid var(--pn-panel-border);
+	border-radius: 10px;
+	color: var(--pn-muted);
+	font-size: 12px;
+	padding: 10px;
+	margin: 0 4px 4px;
+}
+
+.spin {
+	animation: timecue-spin 1s linear infinite;
+}
+
+@keyframes timecue-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes timecue-appear {
+	from {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.98);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes timecue-dismiss {
+	to {
+		opacity: 0;
+		transform: translateX(14px) scale(0.97);
+	}
+}
+
+@keyframes timecue-collapse {
+
+	0%,
+	45% {
+		grid-template-rows: 1fr;
+		margin-bottom: 8px;
+	}
+
+	100% {
+		grid-template-rows: 0fr;
+		margin-bottom: 0;
+		visibility: hidden;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.reminder-card,
+	.reminder-card-slot.is-exiting,
+	.reminder-card-slot.is-exiting .reminder-card,
+	.spin {
+		animation: none;
+	}
+
+	.reminder-confirm {
+		transition: none;
+	}
+}

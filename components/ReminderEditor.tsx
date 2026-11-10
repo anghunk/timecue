@@ -20,6 +20,7 @@ export function ReminderEditor({ reminder, onClose, onSave }: {
 	const [type, setType] = useState<Timing['type']>(original?.type ?? 'once');
 	const [title, setTitle] = useState(reminder?.title ?? '');
 	const [note, setNote] = useState(reminder?.note ?? '');
+	const [url, setUrl] = useState(reminder?.url ?? '');
 	const initialDateTime = toLocalInput(original?.type === 'once' ? original.at : Date.now() + 3_600_000);
 	const [date, setDate] = useState<CalendarDate | null>(() => parseDate(initialDateTime.split('T')[0]!));
 	const [onceTime, setOnceTime] = useState<Time | null>(() => parseTime(initialDateTime.split('T')[1]!));
@@ -43,7 +44,7 @@ export function ReminderEditor({ reminder, onClose, onSave }: {
 				: type === 'schedule' ? { type, time: time!.toString().slice(0, 5), days: [...days].sort() }
 				: type === 'interval' ? { type, minutes: Number(minutes), rule }
 				: { type, minutes: Number(minutes) };
-			const input = { id: reminder?.id, title, note, timing };
+			const input = { id: reminder?.id, title, note, url: url.trim(), timing };
 			validateInput(input);
 			setSaving(true);
 			await onSave(input);
@@ -71,6 +72,7 @@ export function ReminderEditor({ reminder, onClose, onSave }: {
 					{type === 'interval' && <fieldset className="field"><legend>下一次从什么时候开始算</legend><div className="radio-options">{(['fixed', 'after-confirmation'] as const).map((value) => <label className={`radio-option ${rule === value ? 'selected' : ''}`} key={value}><input type="radio" name="interval-rule" value={value} checked={rule === value} onChange={() => setRule(value)} disabled={saving} /><span><strong>{value === 'fixed' ? '固定间隔' : '确认后重新计时'}</strong><small>{value === 'fixed' ? '保持首次提醒的时间节奏，错过的次数不堆积。' : '点击“确认收到”后，再等待一个完整间隔。'}</small></span></label>)}</div></fieldset>}
 				</div>
 				<label className="field"><span>备注 <span className="optional">可选</span></span><textarea rows={2} maxLength={500} placeholder="添加一点说明，会一起显示在提醒卡片中" value={note} onChange={(event) => setNote(event.target.value)} disabled={saving} /></label>
+				<label className="field"><span>链接 <span className="optional">可选</span></span><input type="url" maxLength={2048} placeholder="https://example.com" value={url} onChange={(event) => setUrl(event.target.value)} disabled={saving} /><small>提醒卡片中可点击网址，在新标签页打开。</small></label>
 				{reminder?.pendingId && <p className="field-note">这条提醒正在等待确认。修改后仍保留卡片，新规则在确认后生效。</p>}
 			</div>
 			<div className="dialog-footer"><span>仅卡片提示 · 静音</span><div><button type="button" className="button" onClick={onClose} disabled={saving}>取消</button><button className="button primary" type="submit" disabled={saving}>{saving && <LoaderCircle className="spin" size={15} />}{saving ? '保存中' : reminder ? '保存更改' : '创建提醒'}</button></div></div>

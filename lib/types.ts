@@ -10,6 +10,7 @@ export interface Reminder {
 	id: string;
 	title: string;
 	note: string;
+	url?: string;
 	timing: Timing;
 	enabled: boolean;
 	nextDueAt: number | null;
@@ -44,6 +45,7 @@ export interface ReminderInput {
 	id?: string;
 	title: string;
 	note: string;
+	url?: string;
 	timing: Timing;
 }
 

@@ -57,6 +57,7 @@ export default defineBackground(() => {
 				id: existing?.id ?? crypto.randomUUID(),
 				title: input.title.trim(),
 				note: input.note.trim(),
+				url: input.url?.trim() ?? '',
 				timing: input.timing,
 				enabled,
 				nextDueAt: existing?.pendingId || !enabled ? null : changedTiming ? firstDueAt(input.timing, now) : existing!.nextDueAt,

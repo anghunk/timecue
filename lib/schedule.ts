@@ -58,6 +58,15 @@ export function validateInput(input: ReminderInput): void {
 	if (!input || typeof input.title !== 'string' || !input.title.trim()) throw new Error('请输入提醒标题。');
 	if (input.title.trim().length > 80) throw new Error('标题最多 80 个字。');
 	if (typeof input.note !== 'string' || input.note.length > 500) throw new Error('备注最多 500 个字。');
+	if (input.url !== undefined) {
+		if (typeof input.url !== 'string' || input.url.length > 2048) throw new Error('链接最多 2048 个字符。');
+		if (input.url.trim()) {
+			let url: URL;
+			try { url = new URL(input.url.trim()); }
+			catch { throw new Error('请输入完整的网址，例如 https://example.com。'); }
+			if (!['http:', 'https:'].includes(url.protocol)) throw new Error('链接仅支持 HTTP 或 HTTPS 网址。');
+		}
+	}
 	const timing = input.timing;
 	if (!timing || !['once', 'countdown', 'schedule', 'interval'].includes(timing.type)) {
 		throw new Error('请选择有效的提醒类型。');
